@@ -83,7 +83,7 @@ A simple Flutter ToDo application that allows users to manage their tasks effici
 1. Clone the repository:
 
    ```bash
-   git clone <repository-link>
+   git clone https://github.com/Vatsal1607/todo_app.git
 
 
 ## Getting Started
