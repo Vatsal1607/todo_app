@@ -3,6 +3,8 @@ import 'package:todo_app/providers/add_todo_provider.dart';
 import 'package:todo_app/routes/routes.dart';
 import 'package:todo_app/screens/home_screen.dart';
 import 'providers/bottom_navigation_bar_provider.dart';
+import 'providers/todo_list_provider.dart';
+import 'providers/user_profile_provider.dart';
 import 'routes/routes_name.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +27,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<AddTodoProvider>(
           create: (_) => AddTodoProvider(),
+        ),
+        ChangeNotifierProvider<UserProfileProvider>(
+          create: (_) => UserProfileProvider()..loadUserData(),
+        ),
+        ChangeNotifierProvider<TodoListProvider>(
+          create: (_) => TodoListProvider(),
         ),
       ],
       child: MaterialApp(
