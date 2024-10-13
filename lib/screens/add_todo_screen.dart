@@ -122,6 +122,7 @@ class AddTodoScreen extends StatelessWidget {
                             addTodoProvider.dueDateController.text,
                             addTodoProvider.selectedPriority,
                           );
+
                           addTodoProvider.titleController.clear();
                           addTodoProvider.dueDateController.clear();
                           addTodoProvider.selectedPriority = 'Low';

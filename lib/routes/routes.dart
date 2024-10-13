@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:todo_app/screens/add_todo_screen.dart';
 import 'package:todo_app/screens/todo_list_screen.dart';
 import 'package:todo_app/screens/user_profile_screen.dart';
@@ -19,9 +20,16 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => TodoListScreen());
       default:
         return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(child: Text('No route defined for ${settings.name}')),
-          ),
+          builder: (_) {
+            Future.delayed(Duration.zero, () {
+              // Exit the app.
+              SystemNavigator.pop();
+            });
+            return Scaffold(
+              body:
+                  Center(child: Text('No route defined for ${settings.name}')),
+            );
+          },
         );
     }
   }

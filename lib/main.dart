@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/providers/add_todo_provider.dart';
 import 'package:todo_app/routes/routes.dart';
@@ -7,9 +8,13 @@ import 'providers/todo_list_provider.dart';
 import 'providers/user_profile_provider.dart';
 import 'routes/routes_name.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/data/latest.dart' as tz; // Import timezone data
 
-void main() {
-  // WidgetsFlutterBinding.ensureInitialized();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  // Initialize timezone data
+  tz.initializeTimeZones();
   runApp(
     const MyApp(),
   );
@@ -44,6 +49,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: RoutesName.home,
         onGenerateRoute: AppRoutes.generateRoute,
+        home: HomeScreen(), // Fallback home screen
       ),
     );
   }
