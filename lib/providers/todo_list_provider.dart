@@ -23,8 +23,8 @@ class TodoListProvider with ChangeNotifier {
     } catch (e) {
       debugPrint('Error fetching data: ${e.toString()}');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Something went wrong'),
+        SnackBar(
+          content: Text('Something went wrong, Error fetching data: ${e.toString()}'),
         ),
       );
     } finally {

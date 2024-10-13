@@ -72,7 +72,7 @@ class TodoListScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Status: ${todo.completed}',
+                      'Status: ${todo.completed == true ? 'Completed' : 'Pending' ?? ''}',
                       style: const TextStyle(
                         fontSize: 14.0,
                       ),
