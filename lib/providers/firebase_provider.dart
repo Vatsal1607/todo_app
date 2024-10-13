@@ -6,7 +6,7 @@ import 'package:timezone/timezone.dart' as tz; // Import the timezone package
 import 'package:timezone/data/latest.dart' as tz; // Import timezone data
 import '../models/todo_model.dart';
 
-class TodoProvider with ChangeNotifier {
+class FirebaseProvider with ChangeNotifier {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
 
@@ -20,9 +20,11 @@ class TodoProvider with ChangeNotifier {
     }
   }
 
-  TodoProvider() {
+  FirebaseProvider() {
+    requestPermission();
     initializeLocalNotifications();
     setupMessageHandlers();
+    debugPrint('FirebaseProvider called');
   }
 
   Future<void> initializeLocalNotifications() async {
@@ -64,21 +66,56 @@ class TodoProvider with ChangeNotifier {
     print('Handling a background message: ${message.messageId}');
   }
 
+  // Future<void> scheduleNotification(TodoModel todo) async {
+  //   // Parse the dueDate string into a DateTime object
+  //   DateTime dueDateTime = DateTime.parse(todo.dueDate.toString()); // Ensure the date format is "YYYY-MM-DD"
+  //
+  //   // Set the notification to trigger at the start of the due date
+  //   // var scheduledDate = tz.TZDateTime.from(
+  //   //   DateTime(dueDateTime.year, dueDateTime.month, dueDateTime.day, 9, 0), // Example: Notify at 9:00 AM on due date
+  //   //   tz.local, // Use local timezone
+  //   // );
+  //
+  //
+  //   await flutterLocalNotificationsPlugin.zonedSchedule(
+  //     int.parse(todo.id.toString()), // Unique ID for the notification
+  //     'Todo Reminder',
+  //     'Your todo "${todo.title}" is due today!',
+  //     scheduledDate, // Trigger exactly at the due date
+  //     const NotificationDetails(
+  //       android: AndroidNotificationDetails(
+  //         'your_channel_id',
+  //         'your_channel_name',
+  //         channelDescription: 'your_channel_description',
+  //       ),
+  //     ),
+  //     androidAllowWhileIdle: true,
+  //     uiLocalNotificationDateInterpretation:
+  //     UILocalNotificationDateInterpretation.absoluteTime,
+  //   );
+  // }
+
   Future<void> scheduleNotification(TodoModel todo) async {
     // Parse the dueDate string into a DateTime object
     DateTime dueDateTime = DateTime.parse(todo.dueDate.toString()); // Ensure the date format is "YYYY-MM-DD"
 
-    // Set the notification to trigger at the start of the due date
-    var scheduledDate = tz.TZDateTime.from(
-      DateTime(dueDateTime.year, dueDateTime.month, dueDateTime.day, 9, 0), // Example: Notify at 9:00 AM on due date
-      tz.local, // Use local timezone
-    );
+    // Create a DateTime object for the start of the due date
+    DateTime scheduleDate = DateTime(dueDateTime.year, dueDateTime.month, dueDateTime.day);
+
+    // If the due date is today, set the time to now + 1 second to ensure it is in the future
+    DateTime now = DateTime.now();
+    if (scheduleDate.isBefore(now) || scheduleDate.isAtSameMomentAs(now)) {
+      scheduleDate = now.add(Duration(seconds: 1));
+    }
+
+    // Convert to TZDateTime
+    var scheduledDate = tz.TZDateTime.from(scheduleDate, tz.local);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       int.parse(todo.id.toString()), // Unique ID for the notification
       'Todo Reminder',
       'Your todo "${todo.title}" is due today!',
-      scheduledDate, // Trigger exactly at the due date
+      scheduledDate, // Schedule immediately if the due date is today
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'your_channel_id',
@@ -87,8 +124,7 @@ class TodoProvider with ChangeNotifier {
         ),
       ),
       androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-      UILocalNotificationDateInterpretation.absoluteTime,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 

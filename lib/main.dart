@@ -4,6 +4,7 @@ import 'package:todo_app/providers/add_todo_provider.dart';
 import 'package:todo_app/routes/routes.dart';
 import 'package:todo_app/screens/home_screen.dart';
 import 'providers/bottom_navigation_bar_provider.dart';
+import 'providers/firebase_provider.dart';
 import 'providers/todo_list_provider.dart';
 import 'providers/user_profile_provider.dart';
 import 'routes/routes_name.dart';
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<TodoListProvider>(
           create: (_) => TodoListProvider(),
+        ),
+        ChangeNotifierProvider<FirebaseProvider>(
+          create: (_) => FirebaseProvider(),
         ),
       ],
       child: MaterialApp(

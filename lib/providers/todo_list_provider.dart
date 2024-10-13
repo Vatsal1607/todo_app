@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/models/todo_model.dart';
 
 import '../services/api_client.dart';
+import 'firebase_provider.dart';
 
 class TodoListProvider with ChangeNotifier {
   final ApiClient _apiClient = ApiClient();
@@ -33,7 +35,7 @@ class TodoListProvider with ChangeNotifier {
     }
   }
 
-  void addTodo(String title, String dueDate, String priorities) {
+  void addTodo(String title, String dueDate, String priorities, BuildContext context) {
     final newTodo = TodoModel(
       userId: 1, // Set userId as needed
       id: _todoList.length + 1, // Auto-generate a new ID or handle it as needed
@@ -44,6 +46,8 @@ class TodoListProvider with ChangeNotifier {
     );
 
     _todoList.add(newTodo);
+    // scheduleNotification call
+    context.read<FirebaseProvider>().scheduleNotification(newTodo);
     notifyListeners();
   }
 }

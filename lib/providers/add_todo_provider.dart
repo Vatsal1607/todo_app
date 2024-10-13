@@ -24,7 +24,7 @@ class AddTodoProvider extends ChangeNotifier {
     if (pickedDate != null) {
       selectedDate = pickedDate;
       DateTime parsedDate = DateTime.parse(selectedDate.toString());
-      String formattedDate = DateFormat('dd-MM-yyyy').format(parsedDate);
+      String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
       // print(formattedDate);
       dueDateController.text = formattedDate;
       errorMessage = null; // Clear error message if the date is valid

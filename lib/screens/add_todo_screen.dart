@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/providers/firebase_provider.dart';
 import 'package:todo_app/providers/todo_list_provider.dart';
 
 import '../models/todo_model.dart';
@@ -121,6 +122,7 @@ class AddTodoScreen extends StatelessWidget {
                             addTodoProvider.titleController.text,
                             addTodoProvider.dueDateController.text,
                             addTodoProvider.selectedPriority,
+                            context,
                           );
 
                           addTodoProvider.titleController.clear();
